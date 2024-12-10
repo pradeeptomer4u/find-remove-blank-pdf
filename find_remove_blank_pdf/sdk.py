@@ -7,17 +7,16 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
 import PyPDF2
-
 def remove_pages_from_pdf(input_path, output_path, pages_to_remove):
     # Open the input PDF
     with open(input_path, 'rb') as file:
-        reader = PyPDF2.PdfFileReader(file)
-        writer = PyPDF2.PdfFileWriter()
+        reader = PyPDF2.PdfReader(file)
+        writer = PyPDF2.PdfWriter()
 
         # Copy all pages except the ones to be removed
-        for pageNum in range(reader.numPages):
+        for pageNum in range(len(reader.pages)):
             if pageNum not in pages_to_remove:
-                writer.addPage(reader.getPage(pageNum))
+                writer.add_page(reader.pages[pageNum])
 
         # Write the output PDF
         with open(output_path, 'wb') as output_file:
